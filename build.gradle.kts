@@ -1,3 +1,4 @@
+import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.jvm.JvmTestSuite
 import org.gradle.api.plugins.quality.CodeNarc
 import org.gradle.api.tasks.compile.GroovyCompile
@@ -25,6 +26,12 @@ val scriptsSourceSet =
     resources.setSrcDirs(emptyList<String>())
   }
 tasks.named("compileScriptsGroovy") { enabled = false }
+
+val mainCompileOnly = configurations.named(JavaPlugin.COMPILE_ONLY_CONFIGURATION_NAME)
+val mainImplementation = configurations.named(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME)
+configurations.named(scriptsSourceSet.compileOnlyConfigurationName) {
+  extendsFrom(mainCompileOnly, mainImplementation)
+}
 
 codenarc {
   toolVersion = libs.versions.codenarc.get()
