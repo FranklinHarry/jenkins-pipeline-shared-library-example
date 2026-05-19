@@ -67,6 +67,8 @@ class MySpec : JenkinsFunSpec({
 
 1. Replace `src/com/mkobit/libraryexample/` with your package structure and update `vars/`.
 2. Set `rootProject.name` in `settings.gradle.kts` to your Jenkins library name.
-3. Swap the Jenkins BOM version in `gradle/libs.versions.toml` for your target LTS line.
+3. To target a different Jenkins LTS line, set `sharedLibrary { jenkins { version = "..." } }` in `build.gradle.kts` (default: `2.479.1`).
 4. Pin to a released plugin version on the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/com.mkobit.jenkins.pipelines.shared-library).
-5. Remove the `// TEMPLATE FORK` lines in `settings.gradle.kts` and drop `compatibility.yml`.
+5. Drop the composite-build wiring used during plugin development:
+   - Remove `includeBuild("../jenkins-pipeline-shared-libraries-gradle-plugin")` from `settings.gradle.kts`.
+   - Remove the `// TEMPLATE FORK` blocks in `.github/workflows/build.yml`.
